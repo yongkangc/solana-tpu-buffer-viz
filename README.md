@@ -1,10 +1,10 @@
-# 🚀 Solana TPU Buffer Simulator
+# Solana TPU Buffer Simulator
 
 <p align="center">
   <sub>Built with 🦀 Rust love and ⚡ Solana power</sub>
 </p>
 
-[Solana TPU Buffer](demo_image.png) <!-- You can add an actual screenshot/GIF of your simulator here -->
+[Solana TPU Buffer](./assets/demo_image.png)
 
 ## ✨ Interactive Transaction Processing Unit (TPU) Buffer Visualization
 
@@ -21,9 +21,9 @@ Experience the inner workings of Solana's transaction processing in real-time wi
 
 ## 🌟 Live Demo
 
-Try it out: [Live Demo Link](your-demo-link-here)
+Try it out: [Live Demo Link](https://solana-tpu-buffer-viz.vercel.app/)
 
-[Demo GIF](https://i.imgur.com/placeholder.gif) <!-- Add an actual GIF of your simulator in action -->
+[Demo Video](./assets/demo.gif)
 
 ## 🛠️ Quick Start
 
@@ -41,126 +41,36 @@ npm install
 npm run dev
 ```
 
-## 📚 Educational Value
-
-- Learn how Solana's TPU buffer works
-- Understand transaction prioritization
-- Visualize fee mechanics in action
-- Perfect for workshops and presentations
-
-## 💻 Tech Stack
-
-- ⚛️ React
-- 🎨 Tailwind CSS
-- 🎭 Framer Motion
-- 🔧 Vite
-- 📊 Lucide Icons
-
-## 🎮 Usage
-
-```jsx
-import TPUBufferQueue from "./components/TPUBufferQueue";
-
-function App() {
-  return <TPUBufferQueue />;
-}
-```
-
-## 🎯 Features in Detail
-
-### 📊 Real-time Statistics
-
-- Buffer usage monitoring
-- Transaction processing counts
-- Drop rate analytics
-- Average fee calculations
-
-### 🎛️ Interactive Controls
-
-- Manual transaction injection
-- Automatic simulation mode
-- Transaction processing controls
-- Dark/Light mode toggle
-
-### 📱 Responsive Design
-
-- Mobile-first approach
-- Adaptive layouts
-- Touch-friendly controls
-- Smooth animations
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📖 Learn More
-
-- [Solana Documentation](https://docs.solana.com/)
-- [TPU Architecture](https://docs.solana.com/validator/tpu)
-- [Transaction Processing](https://docs.solana.com/cluster/transaction-processing)
-
-## 🌟 Coming Soon
-
-- [ ] Network latency simulation
-- [ ] Custom transaction creation
-- [ ] Advanced analytics dashboard
-- [ ] Export transaction logs
-- [ ] Multiple buffer simulation
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
----
-
-<p align="center">
-  Made with ❤️ for the Solana community
-</p>
-
----
-
 ## 📘 Understanding TPU Priority Fees
 
 ### How TPU Priority Queue Works
 
-The Transaction Processing Unit (TPU) in Solana implements a sophisticated priority queue system that determines transaction processing order based on several factors:
+The Transaction Processing Unit (TPU) in Solana processes transactions through several key stages:
 
-#### 1. Priority Fee Structure
+#### 1. Initial Processing
 
-- **Base Fee**: Every transaction includes a base fee (currently 5000 lamports)
-- **Priority Fee**: Additional fee paid to increase transaction priority
-- **Compute Units**: Resource usage cost for transaction execution
+- **QUIC Streaming**: Transactions arrive via QUIC streams with stake-based rate limiting
+- **Signature Verification**: Deduplication and filtering of invalid signatures
+- **Banking Stage**: Determines whether to forward, hold, or process transactions
 
-#### 2. Queue Mechanics
+#### 2. Priority and Processing
+
+- **Base Fee**: Standard fee for network resource usage
+- **Priority Fee**: Additional fee for prioritization
+- **Stake-Based Access**: Higher staked clients get more concurrent streams and bandwidth
+- **Rate Limiting**: PPS (Packets Per Second) limits based on stake weight
+
+#### 3. Queue Management
 
 ```
-Priority Score = Base Fee + Priority Fee + (Compute Units × Current Market Rate)
+Priority = Base Fee + Priority Fee + (Compute Units × Current Market Rate)
 ```
 
-The TPU buffer organizes transactions in a max-heap structure where:
+The TPU manages transactions through:
 
-- Higher priority fees get processed first
-- Transactions with equal fees follow FIFO ordering
-- Dynamic reordering occurs as new transactions arrive
-
-#### 3. Market Dynamics
-
-- **Supply & Demand**: Priority fees adjust based on buffer utilization
-- **Network Load**: Higher network congestion → Higher required priority fees
-- **Time Sensitivity**: Users compete for quick execution through fees
-
-Example Priority Calculation:
-
-```rust
-transaction_priority = base_fee + priority_fee + (compute_units × market_rate)
-// e.g., 5000 + 10000 + (200000 × 0.000001) = 15200 lamports
-```
+- Stake-weighted admission control
+- Dynamic load shedding for network stability
+- Automatic backpressure during congestion
 
 #### 4. TPU Buffer States
 
@@ -178,3 +88,30 @@ transaction_priority = base_fee + priority_fee + (compute_units × market_rate)
 3. Inserted into priority queue
 4. Reordering based on new arrivals
 5. Processing based on final priority
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📖 Learn More
+
+- [Solana Documentation](https://docs.solana.com/)
+- [TPU Architecture](https://docs.solana.com/validator/tpu)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+---
+
+<p align="center">
+  Made with ❤️ for the Solana community
+</p>
+
+---

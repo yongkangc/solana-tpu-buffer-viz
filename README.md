@@ -1,6 +1,10 @@
 # 🚀 Solana TPU Buffer Simulator
 
-[Solana TPU Buffer](https://i.imgur.com/placeholder.png) <!-- You can add an actual screenshot/GIF of your simulator here -->
+<p align="center">
+  <sub>Built with 🦀 Rust love and ⚡ Solana power</sub>
+</p>
+
+[Solana TPU Buffer](demo_image.png) <!-- You can add an actual screenshot/GIF of your simulator here -->
 
 ## ✨ Interactive Transaction Processing Unit (TPU) Buffer Visualization
 
@@ -121,23 +125,56 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-> 🚀 Ready to visualize Solana's transaction processing? Start exploring now!
+## 📘 Understanding TPU Priority Fees
 
-## ⭐ Show Your Support
+### How TPU Priority Queue Works
 
-Give a ⭐️ if this project helped you understand Solana's TPU buffer!
+The Transaction Processing Unit (TPU) in Solana implements a sophisticated priority queue system that determines transaction processing order based on several factors:
 
-## 📬 Contact
+#### 1. Priority Fee Structure
 
-- Website: [your-website.com](https://your-website.com)
-- Twitter: [@yourusername](https://twitter.com/yourusername)
-- GitHub: [@yourusername](https://github.com/yourusername)
+- **Base Fee**: Every transaction includes a base fee (currently 5000 lamports)
+- **Priority Fee**: Additional fee paid to increase transaction priority
+- **Compute Units**: Resource usage cost for transaction execution
 
----
+#### 2. Queue Mechanics
 
-<p align="center">
-  <sub>Built with 🦀 Rust love and ⚡ Solana power</sub>
-</p>
+```
+Priority Score = Base Fee + Priority Fee + (Compute Units × Current Market Rate)
+```
 
-Would you like me to add or modify any section of this README?
-# solana-tpu-buffer-viz
+The TPU buffer organizes transactions in a max-heap structure where:
+
+- Higher priority fees get processed first
+- Transactions with equal fees follow FIFO ordering
+- Dynamic reordering occurs as new transactions arrive
+
+#### 3. Market Dynamics
+
+- **Supply & Demand**: Priority fees adjust based on buffer utilization
+- **Network Load**: Higher network congestion → Higher required priority fees
+- **Time Sensitivity**: Users compete for quick execution through fees
+
+Example Priority Calculation:
+
+```rust
+transaction_priority = base_fee + priority_fee + (compute_units × market_rate)
+// e.g., 5000 + 10000 + (200000 × 0.000001) = 15200 lamports
+```
+
+#### 4. TPU Buffer States
+
+| Buffer State | Utilization | Fee Behavior                 |
+| ------------ | ----------- | ---------------------------- |
+| Low Load     | 0-50%       | Minimal priority fees needed |
+| Medium Load  | 51-75%      | Moderate fee competition     |
+| High Load    | 76-90%      | Aggressive fee competition   |
+| Congested    | 91-100%     | Maximum fee competition      |
+
+#### 5. Transaction Lifecycle
+
+1. Transaction arrives at TPU
+2. Priority score calculated
+3. Inserted into priority queue
+4. Reordering based on new arrivals
+5. Processing based on final priority

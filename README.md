@@ -1,9 +1,5 @@
 # Solana TPU Buffer Simulator
 
-<p align="center">
-  <sub>Built with 🦀 Rust love and ⚡ Solana power</sub>
-</p>
-
 [Solana TPU Buffer](./assets/demo_image.png)
 
 ## ✨ Interactive Transaction Processing Unit (TPU) Buffer Visualization
